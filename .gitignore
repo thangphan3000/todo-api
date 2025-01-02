@@ -1,0 +1,6 @@
+# Folders
+/docker
+/node_modules
+
+# Files
+.env
