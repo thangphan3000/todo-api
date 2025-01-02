@@ -1,15 +1,28 @@
-import { AppDataSource } from "database/data-source";
-import { Todo } from "entities/User";
+import { AppDataSource } from "../database/data-source";
+import { Todo } from "../entities/Todo";
 import { Request, Response } from "express";
-import { ResponseUtil } from "utils/Response";
+import { ResponseUtil } from "../utils/Response";
 
 export class TodosController {
   async getTodos(req: Request, res: Response) {
     const todos = await AppDataSource.getRepository(Todo).find();
 
-    return ResponseUtil.sendResponse({
+    ResponseUtil.sendResponse({
       res,
       data: todos,
+    });
+    return;
+  }
+
+  async getTodo(req: Request, res: Response) {
+    const { id } = req.params;
+    const todo = await AppDataSource.getRepository(Todo).findOneBy({
+      id: parseInt(id),
+    });
+
+    ResponseUtil.sendResponse({
+      res,
+      data: todo,
     });
   }
 
@@ -19,7 +32,7 @@ export class TodosController {
     const todo = repo.create(todoData);
     await repo.save(todo);
 
-    return ResponseUtil.sendResponse({ res, data: todo, statusCode: 201 });
+    ResponseUtil.sendResponse({ res, data: todo, statusCode: 201 });
   }
 
   async updateTodo(req: Request, res: Response) {
@@ -29,17 +42,18 @@ export class TodosController {
     const todo = await repo.findOneBy({ id: parseInt(id) });
 
     if (!todo) {
-      return ResponseUtil.sendError({
+      ResponseUtil.sendError({
         res,
         message: "Todo not found",
         statusCode: 404,
       });
+      return;
     }
 
     repo.merge(todo, todoData);
     await repo.save(todo);
 
-    return ResponseUtil.sendResponse({ res, data: todo });
+    ResponseUtil.sendResponse({ res, data: todo });
   }
 
   async deleteTodo(req: Request, res: Response) {
@@ -50,15 +64,16 @@ export class TodosController {
     });
 
     if (!todo) {
-      return ResponseUtil.sendError({
+      ResponseUtil.sendError({
         res,
         message: "Todo not found",
         statusCode: 404,
       });
+      return;
     }
 
     await repo.remove(todo);
 
-    return ResponseUtil.sendResponse({ res, data: null });
+    ResponseUtil.sendResponse({ res, data: null });
   }
 }

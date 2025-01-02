@@ -1,11 +1,15 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Request, Response } from "express";
+import { ErrorHandler } from "./utils/ErrorHandler";
+import todosRoutes from "./routes/todos";
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use("/api/todos", ErrorHandler.handleError(todosRoutes));
 
 app.all(/(.*)/, (req: Request, res: Response) => {
   res.status(404).send({
