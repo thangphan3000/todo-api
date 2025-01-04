@@ -16,5 +16,5 @@ module.exports = {
   testRegex: "((\\.|/)(test|spec))\\.ts?$",
 
   // File extensions to recognize in module resolution
-  moduleFileExtensions: ["ts", "json", "node"],
+  moduleFileExtensions: ["ts", "js", "json", "node"],
 };

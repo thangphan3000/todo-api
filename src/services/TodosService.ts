@@ -3,7 +3,7 @@ import { Todo } from "../entities/Todo";
 
 type TodoData = Pick<Todo, "content">;
 
-export class TodosService {
+export default class TodosService {
   static async getTodos(): Promise<Todo[]> {
     return await AppDataSource.getRepository(Todo).find();
   }

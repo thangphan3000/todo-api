@@ -1,8 +1,6 @@
-import { AppDataSource } from "../database/data-source";
-import { Todo } from "../entities/Todo";
 import { Request, Response } from "express";
 import { ResponseUtil } from "../utils/Response";
-import { TodosService } from "../services/TodosService";
+import TodosService from "../services/TodosService";
 
 export class TodosController {
   async getTodos(req: Request, res: Response) {
@@ -19,7 +17,7 @@ export class TodosController {
   async getTodo(req: Request, res: Response) {
     const { id } = req.params;
     const parsedId = parseInt(id);
-    const todo = TodosService.getTodoById(parsedId);
+    const todo = await TodosService.getTodoById(parsedId);
 
     ResponseUtil.sendResponse({
       res,
@@ -29,9 +27,7 @@ export class TodosController {
 
   async createTodo(req: Request, res: Response) {
     const todoData = req.body;
-    const repo = AppDataSource.getRepository(Todo);
-    const todo = repo.create(todoData);
-    await repo.save(todo);
+    const todo = await TodosService.createTodo(todoData);
 
     ResponseUtil.sendResponse({ res, data: todo, statusCode: 201 });
   }

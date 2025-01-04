@@ -1,4 +1,5 @@
 import { Response } from "express";
+import RESPONSE_CODES from "../constants/ResponseCodes";
 
 interface CommonResponse {
   res: Response;
@@ -15,7 +16,11 @@ interface SendError extends CommonResponse {
 }
 
 export class ResponseUtil {
-  static sendResponse<T>({ res, data, statusCode = 200 }: SendResponse<T>) {
+  static sendResponse<T>({
+    res,
+    data,
+    statusCode = RESPONSE_CODES.SUCCESS,
+  }: SendResponse<T>) {
     return res.status(statusCode).send({
       success: true,
       message: "Success",
@@ -23,7 +28,12 @@ export class ResponseUtil {
     });
   }
 
-  static sendError({ res, errors, message, statusCode = 500 }: SendError) {
+  static sendError({
+    res,
+    errors,
+    message,
+    statusCode = RESPONSE_CODES.ERROR_INTERNAL_SERVER,
+  }: SendError) {
     return res.status(statusCode).send({
       success: false,
       message,
