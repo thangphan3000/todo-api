@@ -2,23 +2,24 @@ import { AppDataSource } from "../database/data-source";
 import { Todo } from "../entities/Todo";
 import { Request, Response } from "express";
 import { ResponseUtil } from "../utils/Response";
+import { TodosService } from "../services/TodosService";
 
 export class TodosController {
   async getTodos(req: Request, res: Response) {
-    const todos = await AppDataSource.getRepository(Todo).find();
+    const todos = await TodosService.getTodos();
 
     ResponseUtil.sendResponse({
       res,
       data: todos,
     });
+
     return;
   }
 
   async getTodo(req: Request, res: Response) {
     const { id } = req.params;
-    const todo = await AppDataSource.getRepository(Todo).findOneBy({
-      id: parseInt(id),
-    });
+    const parsedId = parseInt(id);
+    const todo = TodosService.getTodoById(parsedId);
 
     ResponseUtil.sendResponse({
       res,
@@ -35,44 +36,20 @@ export class TodosController {
     ResponseUtil.sendResponse({ res, data: todo, statusCode: 201 });
   }
 
-  async updateTodo(req: Request, res: Response) {
-    const { id } = req.params;
-    const todoData = req.body;
-    const repo = AppDataSource.getRepository(Todo);
-    const todo = await repo.findOneBy({ id: parseInt(id) });
-
-    if (!todo) {
-      ResponseUtil.sendError({
-        res,
-        message: "Todo not found",
-        statusCode: 404,
-      });
-      return;
-    }
-
-    repo.merge(todo, todoData);
-    await repo.save(todo);
-
-    ResponseUtil.sendResponse({ res, data: todo });
-  }
-
   async deleteTodo(req: Request, res: Response) {
     const { id } = req.params;
-    const repo = AppDataSource.getRepository(Todo);
-    const todo = await repo.findOneBy({
-      id: parseInt(id),
-    });
+    const parsedId = parseInt(id);
+    const isDeleted = await TodosService.deleteTodo(parsedId);
 
-    if (!todo) {
+    if (!isDeleted) {
       ResponseUtil.sendError({
         res,
         message: "Todo not found",
         statusCode: 404,
       });
+
       return;
     }
-
-    await repo.remove(todo);
 
     ResponseUtil.sendResponse({ res, data: null });
   }

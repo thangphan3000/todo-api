@@ -6,7 +6,7 @@ import todosRoutes from "./routes/todos";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: process.env.FRONT_HOST }));
 app.use(bodyParser.json());
 
 app.use("/api/todos", ErrorHandler.handleError(todosRoutes));
