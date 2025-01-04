@@ -1,6 +1,7 @@
 # Folders
-/docker
 /node_modules
+/docker
+/dist
 
 # Files
 .env

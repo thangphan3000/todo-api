@@ -9,6 +9,10 @@ jest.mock("../../services/TodosService");
 describe("TodosController", () => {
   const app = startApp();
 
+  afterAll(() => {
+    app.close();
+  });
+
   it("get todos and returns success response", async () => {
     const mockTodos: Todo[] = [
       { id: 1, content: "Eat banana" },
