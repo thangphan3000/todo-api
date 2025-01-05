@@ -8,13 +8,23 @@
     "dev": "nodemon --watch src --exec 'ts-node' src/index.ts",
     "prod": "yarn run ts-node dist/index.js",
     "start": "node dist/index.js",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix",
+    "prettier:check": "prettier --check 'src/**/*.ts'",
+    "prettier": "prettier --write 'src/**/*.ts'",
     "test": "jest",
     "test:watch": "jest --watch",
     "typeorm": "typeorm-ts-node-commonjs -d src/database/data-source.ts",
     "migration:create": "node scripts/migration-create.js",
     "migration:show": "yarn typeorm migration:show",
-    "migration:revert": "yarn typeorm migration:revert"
+    "migration:revert": "yarn typeorm migration:revert",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "body-parser": "^1.20.3",
@@ -41,6 +51,8 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
     "ts-node": "^10.9.2",

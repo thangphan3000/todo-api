@@ -1,20 +1,20 @@
 module.exports = {
   // Use ts-jest preset for testing TypeScript files with Jest
-  preset: "ts-jest",
+  preset: 'ts-jest',
 
   // Set the test environment to Node.js
-  testEnvironment: "node",
+  testEnvironment: 'node',
 
   // Define the root directory for tests and modules
-  roots: ["<rootDir>/src/tests"],
+  roots: ['<rootDir>/src/tests'],
 
   // Use ts-jest to transform TypeScript files
   transform: {
-    "^.+\\.ts?$": "ts-jest",
+    '^.+\\.ts?$': 'ts-jest'
   },
 
-  testRegex: "((\\.|/)(test|spec))\\.ts?$",
+  testRegex: '((\\.|/)(test|spec))\\.ts?$',
 
   // File extensions to recognize in module resolution
-  moduleFileExtensions: ["ts", "js", "json", "node"],
+  moduleFileExtensions: ['ts', 'js', 'json', 'node']
 };
