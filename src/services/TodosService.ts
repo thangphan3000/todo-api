@@ -1,7 +1,7 @@
-import { AppDataSource } from "../database/data-source";
-import { Todo } from "../entities/Todo";
+import { AppDataSource } from '../database/data-source';
+import { Todo } from '../entities/Todo';
 
-type TodoData = Pick<Todo, "content">;
+type TodoData = Pick<Todo, 'content'>;
 
 export default class TodosService {
   static async getTodos(): Promise<Todo[]> {
@@ -10,7 +10,7 @@ export default class TodosService {
 
   static async getTodoById(id: number): Promise<Todo | null> {
     return await AppDataSource.getRepository(Todo).findOneBy({
-      id,
+      id
     });
   }
 

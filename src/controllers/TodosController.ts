@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { ResponseUtil } from "../utils/Response";
-import TodosService from "../services/TodosService";
+import { Request, Response } from 'express';
+import { ResponseUtil } from '../utils/Response';
+import TodosService from '../services/TodosService';
 
 export class TodosController {
   async getTodos(req: Request, res: Response) {
@@ -8,7 +8,7 @@ export class TodosController {
 
     ResponseUtil.sendResponse({
       res,
-      data: todos,
+      data: todos
     });
 
     return;
@@ -21,7 +21,7 @@ export class TodosController {
 
     ResponseUtil.sendResponse({
       res,
-      data: todo,
+      data: todo
     });
   }
 
@@ -40,8 +40,8 @@ export class TodosController {
     if (!isDeleted) {
       ResponseUtil.sendError({
         res,
-        message: "Todo not found",
-        statusCode: 404,
+        message: 'Todo not found',
+        statusCode: 404
       });
 
       return;

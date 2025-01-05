@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: "todos" })
+@Entity({ name: 'todos' })
 export class Todo {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: "content" })
+  @Column({ name: 'content' })
   content: string;
 }
