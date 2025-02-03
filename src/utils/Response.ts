@@ -12,7 +12,7 @@ interface SendResponse<T> extends CommonResponse {
 
 interface SendError extends CommonResponse {
   message: string;
-  errors?: any[] | null;
+  errors?: unknown[] | null;
 }
 
 export class ResponseUtil {

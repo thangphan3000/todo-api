@@ -19,11 +19,27 @@ const entitiesPath = getEntityFilesPathBasedOnENV();
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
+  replication: {
+    master: {
+      host: process.env.DB_HOST_SOURCE,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE
+    },
+    slaves: [
+      {
+        host: process.env.DB_HOST_REPLICA,
+        port: Number(process.env.DB_PORT),
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE
+      }
+    ],
+    canRetry: true,
+    removeNodeErrorCount: 5,
+    selector: 'RR'
+  },
   // BUG: fix this path because after we build the source code we do not have the src folder
   migrations: ['src/database/migrations/*.{js,ts}'],
   logging: isDevelopment,

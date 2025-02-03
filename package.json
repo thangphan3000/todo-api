@@ -15,6 +15,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "typeorm": "typeorm-ts-node-commonjs -d src/database/data-source.ts",
+    "migration:run": "yarn typeorm migration:run",
     "migration:create": "node scripts/migration-create.js",
     "migration:show": "yarn typeorm migration:show",
     "migration:revert": "yarn typeorm migration:revert",
