@@ -8,7 +8,7 @@ import healthRoutes from './routes/health';
 const app = express();
 
 // Middlewares
-app.use(cors({ origin: process.env.FRONT_HOST }));
+app.use(cors({ origin: process.env.WEB_URL }));
 app.use(bodyParser.json());
 
 // Routes
