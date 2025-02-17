@@ -1,5 +1,13 @@
-# Folders
-/node_modules
+node_modules
+dist
+.husky
+.idea
+.git
+docker
 
-# Files
+*.md
 .env
+.env.sample
+.gitignore
+.prettierrc.json
+.prettierignore

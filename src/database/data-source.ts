@@ -15,7 +15,16 @@ const getEntityFilesPathBasedOnENV = (): string => {
   return `${path.resolve(__dirname, '..')}/entities/*.{js,ts}`;
 };
 
+const getMigrationFilesBasedOnENV = (): string => {
+  if (isDevelopment) {
+    return 'src/database/migrations/*.ts';
+  }
+
+  return `${path.resolve(__dirname, '..')}/database/migrations/*.js`;
+};
+
 const entitiesPath = getEntityFilesPathBasedOnENV();
+const migrationsPath = getMigrationFilesBasedOnENV();
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -40,9 +49,8 @@ export const AppDataSource = new DataSource({
     removeNodeErrorCount: 5,
     selector: 'RR'
   },
-  // BUG: fix this path because after we build the source code we do not have the src folder
-  migrations: ['src/database/migrations/*.{js,ts}'],
   logging: isDevelopment,
+  migrations: [migrationsPath],
   entities: [entitiesPath],
   synchronize: false,
   subscribers: []
