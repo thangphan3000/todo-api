@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --watch src --exec 'ts-node' src/index.ts",
-    "prod": "NODE_ENV=production yarn run ts-node dist/index.js",
+    "dev": "NODE_ENV=development nodemon --watch src --exec 'ts-node' src/index.ts",
+    "prod": "yarn run ts-node dist/index.js",
     "start": "node dist/index.js",
     "lint": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix",
@@ -15,9 +15,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "typeorm": "typeorm-ts-node-commonjs -d src/database/data-source.ts",
-    "migration:run": "yarn typeorm migration:run",
+    "dev:migration:run": "NODE_ENV=development yarn typeorm migration:run",
+    "prod:migration:run": "yarn run typeorm-ts-node-commonjs -d dist/database/data-source.js migration:run",
     "migration:create": "node scripts/migration-create.js",
-    "migration:show": "yarn typeorm migration:show",
+    "migration:show": "NODE_ENV=development yarn typeorm migration:show",
     "migration:revert": "yarn typeorm migration:revert",
     "prepare": "husky"
   },
