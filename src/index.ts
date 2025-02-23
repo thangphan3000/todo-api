@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import app from './app';
 import { AppDataSource } from './database/data-source';
 import log from './utils/Logger';
+import { startMetricsServer } from './utils/Metrics';
 
 dotenv.config();
 
@@ -18,3 +19,5 @@ AppDataSource.initialize()
 app.listen(PORT, () => {
   log.info(`Server is listening on the port: ${PORT}`);
 });
+
+startMetricsServer();
