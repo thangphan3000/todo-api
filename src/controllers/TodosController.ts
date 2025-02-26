@@ -3,7 +3,7 @@ import { ResponseUtil } from '../utils/Response';
 import TodosService from '../services/TodosService';
 
 export class TodosController {
-  async getTodos(req: Request, res: Response) {
+  async getTodos(_req: Request, res: Response) {
     const todos = await TodosService.getTodos();
 
     ResponseUtil.sendResponse({
