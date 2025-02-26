@@ -1,19 +1,19 @@
-/* eslint-disable no-console */
 import { Request, Response } from 'express';
 import { ResponseUtil } from '../utils/Response';
-import { DataSource, QueryRunner } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { AppDataSource } from '../database/data-source';
+import log from '../utils/Logger';
 
 export class HealthCheckController {
-  async checkHealth(req: Request, res: Response) {
+  async checkHealth(_req: Request, res: Response) {
     try {
       const dataSource: DataSource = AppDataSource;
       if (!dataSource.isInitialized) {
         AppDataSource.initialize()
           .then(async () => {
-            console.log('Database connection success');
+            log.info('Database connection success');
           })
-          .catch((err) => console.log(err));
+          .catch((err) => log.error(err));
       }
 
       const readResult = await dataSource.query('SELECT 1 AS read_check');
@@ -21,7 +21,7 @@ export class HealthCheckController {
         throw new Error('Read health check failed');
       }
     } catch (err: unknown) {
-      console.log(`Error health check: ${err}`);
+      log.error(`Error health check: ${err}`);
 
       ResponseUtil.sendError({
         res,

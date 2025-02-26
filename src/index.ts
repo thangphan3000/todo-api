@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import * as dotenv from 'dotenv';
 import 'reflect-metadata';
 import app from './app';
@@ -14,7 +13,7 @@ AppDataSource.initialize()
   .then(async () => {
     log.info('Database connection success');
   })
-  .catch((err) => console.log(err));
+  .catch((err) => log.error(err));
 
 app.listen(PORT, () => {
   log.info(`Server is listening on the port: ${PORT}`);
