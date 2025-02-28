@@ -22,7 +22,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
       {
         method: req.method,
         route: req.originalUrl,
-        code: res.statusCode
+        status: res.statusCode
       },
       durationInSeconds
     );
