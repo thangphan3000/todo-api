@@ -19,6 +19,16 @@ export class TodosController {
     const parsedId = parseInt(id);
     const todo = await TodosService.getTodoById(parsedId);
 
+    if (!todo) {
+      ResponseUtil.sendError({
+        res,
+        message: 'Todo not found',
+        statusCode: 404
+      });
+
+      return;
+    }
+
     ResponseUtil.sendResponse({
       res,
       data: todo
