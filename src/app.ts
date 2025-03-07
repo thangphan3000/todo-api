@@ -4,7 +4,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { ErrorHandler } from './utils/ErrorHandler';
 import todosRoutes from './routes/todos';
 import healthRoutes from './routes/health';
-import { responseTimeHistogram } from './utils/Metrics';
+import { requestsInProgress, responseTimeHistogram } from './utils/Metrics';
 
 const app = express();
 
@@ -13,6 +13,7 @@ app.use(cors({ origin: process.env.WEB_URL }));
 app.use(bodyParser.json());
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = process.hrtime();
+  requestsInProgress.inc({ method: req.method, route: req.originalUrl });
 
   res.on('finish', () => {
     const duration = process.hrtime(start);
@@ -26,6 +27,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
       },
       durationInSeconds
     );
+    requestsInProgress.dec({ method: req.method, route: req.originalUrl });
   });
 
   next();

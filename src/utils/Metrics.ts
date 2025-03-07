@@ -15,6 +15,12 @@ export const responseTimeHistogram = new promClient.Histogram({
   labelNames: ['method', 'route', 'status']
 });
 
+export const requestsInProgress = new promClient.Gauge({
+  name: 'http_requests_in_progress',
+  help: 'Number of in-progress HTTP requests',
+  labelNames: ['method', 'route']
+});
+
 export function startMetricsServer() {
   promClient.register.setDefaultLabels({
     app: 'nodejs-api'
