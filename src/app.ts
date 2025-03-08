@@ -13,7 +13,7 @@ app.use(cors({ origin: process.env.WEB_URL }));
 app.use(bodyParser.json());
 app.use((req: Request, res: Response, next: NextFunction) => {
   const start = process.hrtime();
-  requestsInProgress.inc({ method: req.method, route: req.originalUrl });
+  requestsInProgress.inc({ method: req.method, path: req.originalUrl });
 
   res.on('finish', () => {
     const duration = process.hrtime(start);
@@ -22,12 +22,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     responseTimeHistogram.observe(
       {
         method: req.method,
-        route: req.originalUrl,
+        path: req.originalUrl,
         status: res.statusCode
       },
       durationInSeconds
     );
-    requestsInProgress.dec({ method: req.method, route: req.originalUrl });
+    requestsInProgress.dec({ method: req.method, path: req.originalUrl });
   });
 
   next();

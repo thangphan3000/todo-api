@@ -12,13 +12,13 @@ const app = express();
 export const responseTimeHistogram = new promClient.Histogram({
   name: 'http_request_duration_seconds',
   help: 'Duration of HTTP requests in seconds',
-  labelNames: ['method', 'route', 'status']
+  labelNames: ['method', 'path', 'status']
 });
 
 export const requestsInProgress = new promClient.Gauge({
   name: 'http_requests_in_progress',
   help: 'Number of in-progress HTTP requests',
-  labelNames: ['method', 'route']
+  labelNames: ['method', 'path']
 });
 
 export function startMetricsServer() {
