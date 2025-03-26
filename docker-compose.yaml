@@ -4,6 +4,8 @@ services:
     image: mysql:9.1.0
     environment:
       MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '3306:3306'
     volumes:
       - ./docker/database:/var/lib/mysql:rw
       - ./sql:/docker-entrypoint-initdb.d/
