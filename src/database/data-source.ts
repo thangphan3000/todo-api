@@ -7,51 +7,50 @@ dotenv.config();
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-const getEntityFilesPathBasedOnENV = (): string => {
-  if (isDevelopment) {
-    return 'src/entities/*.{js,ts}';
-  }
+const getPaths = () => {
+  const baseDir = isDevelopment ? 'src' : path.resolve(__dirname, '..');
 
-  return `${path.resolve(__dirname, '..')}/entities/*.{js,ts}`;
+  return {
+    entities: [`${baseDir}/entities/*.${isDevelopment ? '{js,ts}' : 'js'}`],
+    migrations: [`${baseDir}/database/migrations/*.${isDevelopment ? '{js,ts}' : 'js'}`]
+  };
 };
 
-const getMigrationFilesBasedOnENV = (): string => {
-  if (isDevelopment) {
-    return 'src/database/migrations/*.ts';
-  }
+const getBaseConnection = () => ({
+  port: Number(process.env.DB_PORT),
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+});
 
-  return `${path.resolve(__dirname, '..')}/database/migrations/*.js`;
-};
-
-const entitiesPath = getEntityFilesPathBasedOnENV();
-const migrationsPath = getMigrationFilesBasedOnENV();
-
-export const AppDataSource = new DataSource({
-  type: 'mysql',
+const getProductionConfig = () => ({
   replication: {
     master: {
       host: process.env.DB_HOST_SOURCE,
-      port: Number(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME
+      ...getBaseConnection()
     },
     slaves: [
       {
         host: process.env.DB_HOST_REPLICA,
-        port: Number(process.env.DB_PORT),
-        username: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME
+        ...getBaseConnection()
       }
     ],
     canRetry: true,
     removeNodeErrorCount: 5,
-    selector: 'RR'
-  },
+    selector: 'RR' as const
+  }
+});
+
+const getDevelopmentConfig = () => ({
+  host: process.env.DB_HOST_SOURCE,
+  ...getBaseConnection()
+});
+
+export const AppDataSource = new DataSource({
+  type: 'mysql',
+  ...(isDevelopment ? getDevelopmentConfig() : getProductionConfig()),
+  ...getPaths(),
   logging: isDevelopment,
-  migrations: [migrationsPath],
-  entities: [entitiesPath],
   synchronize: false,
   subscribers: []
 });
