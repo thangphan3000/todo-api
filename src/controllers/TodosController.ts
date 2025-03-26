@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ResponseUtil } from '../utils/Response';
 import TodosService from '../services/TodosService';
+import logger from '../utils/Logger';
 
 export class TodosController {
   async getTodos(_req: Request, res: Response) {
@@ -20,6 +21,8 @@ export class TodosController {
     const todo = await TodosService.getTodoById(parsedId);
 
     if (!todo) {
+      logger.error(`Todo not found`, { todoId: id });
+
       ResponseUtil.sendError({
         res,
         message: 'Todo not found',
@@ -48,6 +51,8 @@ export class TodosController {
     const isDeleted = await TodosService.deleteTodo(parsedId);
 
     if (!isDeleted) {
+      logger.error(`Todo not found`, { todoId: id });
+
       ResponseUtil.sendError({
         res,
         message: 'Todo not found',

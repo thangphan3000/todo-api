@@ -2,6 +2,7 @@
 /node_modules
 /docker
 /dist
+/logs
 
 # Files
 .env

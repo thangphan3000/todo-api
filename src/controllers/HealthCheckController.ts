@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ResponseUtil } from '../utils/Response';
 import { DataSource } from 'typeorm';
 import { AppDataSource } from '../database/data-source';
-import log from '../utils/Logger';
+import logger from '../utils/Logger';
 
 export class HealthCheckController {
   async checkHealth(_req: Request, res: Response) {
@@ -11,9 +11,9 @@ export class HealthCheckController {
       if (!dataSource.isInitialized) {
         AppDataSource.initialize()
           .then(async () => {
-            log.info('Database connection success');
+            logger.info('Database connection success');
           })
-          .catch((err) => log.error(err));
+          .catch((err) => logger.error(err));
       }
 
       const readResult = await dataSource.query('SELECT 1 AS read_check');
@@ -21,7 +21,7 @@ export class HealthCheckController {
         throw new Error('Read health check failed');
       }
     } catch (err: unknown) {
-      log.error(`Error health check: ${err}`);
+      logger.error(`Error health check: ${err}`);
 
       ResponseUtil.sendError({
         res,
