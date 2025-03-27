@@ -14,7 +14,7 @@ const app = express();
 const morganMiddleware = morgan(
   function (tokens, req, res) {
     return JSON.stringify({
-      correlationId: (req as LoggingRequest).correlationId,
+      correlation_id: (req as LoggingRequest).correlation_id,
       method: tokens.method(req, res),
       url: tokens.url(req, res),
       // @ts-expect-error skip type
@@ -32,7 +32,7 @@ const morganMiddleware = morgan(
 // Middlewares
 app.use((req: Request, res: Response, next: NextFunction) => {
   const id = uuid();
-  (req as LoggingRequest).correlationId = id;
+  (req as LoggingRequest).correlation_id = id;
   res.setHeader('X-Correlation-Id', id);
   next();
 });

@@ -19,12 +19,12 @@ export class TodosController {
   async getTodo(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { correlationId } = req as LoggingRequest;
+      const { correlation_id } = req as LoggingRequest;
       const parsedId = parseInt(id);
       const todo = await TodosService.getTodoById(parsedId);
 
       if (!todo) {
-        logger.error(`Todo not found`, { metadata: { todoId: id }, correlationId });
+        logger.error(`Todo not found`, { metadata: { todoId: id }, correlation_id });
 
         ResponseUtil.sendError({
           res,
@@ -58,12 +58,12 @@ export class TodosController {
 
   async deleteTodo(req: Request, res: Response) {
     const { id } = req.params;
-    const { correlationId } = req as LoggingRequest;
+    const { correlation_id } = req as LoggingRequest;
     const parsedId = parseInt(id);
     const isDeleted = await TodosService.deleteTodo(parsedId);
 
     if (!isDeleted) {
-      logger.error(`Todo not found`, { metadata: { todoId: id }, correlationId });
+      logger.error(`Todo not found`, { metadata: { todoId: id }, correlation_id });
 
       ResponseUtil.sendError({
         res,
