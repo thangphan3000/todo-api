@@ -2,7 +2,7 @@ import winston from 'winston';
 
 const { combine, colorize, timestamp, json, errors, cli } = winston.format;
 const { File, Console } = winston.transports;
-const LOGS_FOLDER_PATH = 'logs/';
+const LOGS_FOLDER_PATH = '/var/log/';
 
 export class LoggerStream {
   write(message: string) {
