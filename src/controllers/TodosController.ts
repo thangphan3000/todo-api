@@ -24,7 +24,7 @@ export class TodosController {
       const todo = await TodosService.getTodoById(parsedId);
 
       if (!todo) {
-        logger.error(`Todo not found`, { metadata: { todoId: id }, correlation_id });
+        logger.error(`Todo not found`, { metadata: { todo_id: id }, correlation_id });
 
         ResponseUtil.sendError({
           res,
@@ -63,7 +63,7 @@ export class TodosController {
     const isDeleted = await TodosService.deleteTodo(parsedId);
 
     if (!isDeleted) {
-      logger.error(`Todo not found`, { metadata: { todoId: id }, correlation_id });
+      logger.error(`Todo not found`, { metadata: { todo_id: id }, correlation_id });
 
       ResponseUtil.sendError({
         res,
