@@ -1,8 +1,7 @@
 import winston from 'winston';
 
 const { combine, colorize, timestamp, json, errors, cli } = winston.format;
-const { File, Console } = winston.transports;
-const LOGS_FOLDER_PATH = '/var/log/';
+const { Console } = winston.transports;
 
 export class LoggerStream {
   write(message: string) {
@@ -11,9 +10,10 @@ export class LoggerStream {
   }
 }
 
+const isDevelopment = process.env.NODE_ENV === 'development';
 const tags = { development: 'local', staging: 'staging', uat: 'uat', production: 'prod' };
 
-const consoleTransport = new Console({
+const prettyConsoleTransport = new Console({
   format: combine(
     colorize(),
     cli({
@@ -34,9 +34,7 @@ const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'http',
   exitOnError: false,
   format: combine(timestamp(), errors({ stack: true }), json()),
-  transports: [new File({ filename: `${LOGS_FOLDER_PATH}/standards.log` }), consoleTransport],
-  exceptionHandlers: [new File({ filename: `${LOGS_FOLDER_PATH}/exceptions.log` })],
-  rejectionHandlers: [new File({ filename: `${LOGS_FOLDER_PATH}/rejections.log` })],
+  transports: [isDevelopment ? prettyConsoleTransport : new Console()],
   defaultMeta: { app: 'NodeJS', env: tags[process.env.NODE_ENV || 'development'] }
 });
 

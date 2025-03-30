@@ -11,6 +11,5 @@ COPY package.json yarn.lock ./
 RUN yarn global add ts-node && yarn install --prod
 COPY --from=builder /app/dist ./dist
 RUN chown -R node:node /app
-RUN chown -R node:node /var/log
 USER node
 CMD ["yarn", "prod"]
