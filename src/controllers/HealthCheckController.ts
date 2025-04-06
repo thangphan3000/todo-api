@@ -11,7 +11,7 @@ export class HealthCheckController {
       if (!dataSource.isInitialized) {
         AppDataSource.initialize()
           .then(async () => {
-            logger.info('Database connection success');
+            logger.info('Database connected');
           })
           .catch((err) => logger.error(err));
       }
