@@ -18,7 +18,7 @@ export class HealthCheckController {
 
       const readResult = await dataSource.query('SELECT 1 AS read_check');
       if (!readResult || readResult.length === 0) {
-        throw new Error('Read health check failed');
+        throw new Error('Read health check failed!');
       }
     } catch (err: unknown) {
       logger.error(`Error health check: ${err}`);
